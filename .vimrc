@@ -1,6 +1,7 @@
 "Turn on pathogen
 call pathogen#infect()
 call pathogen#helptags()
+call pathogen#runtime_append_all_bundles()
 
 "Enable buffer switching without writing to disc
 set hidden
@@ -31,6 +32,7 @@ syntax on
 filetype on
 filetype plugin on
 filetype indent on
+filetype plugin indent on
 
 "Highlight search terms
 set hlsearch
