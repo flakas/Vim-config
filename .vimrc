@@ -97,3 +97,6 @@ set showmode
 set foldenable
 
 set guifont=
+
+"Bind F2 key to toggle NERDTree
+map <F2> :NERDTreeToggle<CR>
