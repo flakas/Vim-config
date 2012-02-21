@@ -76,8 +76,8 @@ set si "Smart indent
 set wrap "Wrap lines
 
 "Solarized theme, dark background
-color solarized
-set background=dark
+color jellybeans
+set background=light
 
 set foldclose=all
 set foldmethod=marker
