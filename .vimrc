@@ -83,6 +83,8 @@ endif
 if !has("gui_running")
     color molokai
     set background=light
+    "color jellybeans
+    "set background=light
 endif
 
 set foldclose=all
@@ -91,7 +93,7 @@ set enc=utf-8
 set lazyredraw
 
 "set spellchecking
-set spell
+"set spell
 
 "Highlight current line
 set cursorline
