@@ -127,11 +127,6 @@ set laststatus=2
 set statusline=%f "tail of the filename"
 
 "Modify statusline
-"set statusline=%F%m%r%h%w\ 
-"set statusline+=%{fugitive#statusline()}\    
-"set statusline+=[%{strlen(&fenc)?&fenc:&enc}]
-"set statusline+=\ [line\ %l\/%L]          
-
 set statusline=%t       "tail of the filename
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
 set statusline+=%{&ff}] "file format
