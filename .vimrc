@@ -121,3 +121,26 @@ endif
 
 nnoremap / /\v
 vnoremap / /\v
+
+"Always display statusline
+set laststatus=2
+set statusline=%f "tail of the filename"
+
+"Modify statusline
+"set statusline=%F%m%r%h%w\ 
+"set statusline+=%{fugitive#statusline()}\    
+"set statusline+=[%{strlen(&fenc)?&fenc:&enc}]
+"set statusline+=\ [line\ %l\/%L]          
+
+set statusline=%t       "tail of the filename
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+set statusline+=%y      "filetype
+set statusline+=%{fugitive#statusline()}\    
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file]"
