@@ -81,7 +81,7 @@ if has("gui_running")
     set background=dark
 endif
 if !has("gui_running")
-    color molokai
+    color jellybeans
     set background=light
     "color jellybeans
     "set background=light
