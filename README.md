@@ -10,5 +10,6 @@ Installation
 - `git submodule update`
 
 If required, link `.vim` and `.vimrc` (on Linux):
+
 - `ln -s ~/PATH/Vim-config/.vim ~/.vim`
 - `ln -s ~/PATH/Vim-config/.vimrc ~/.vimrc`
