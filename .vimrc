@@ -142,3 +142,7 @@ set statusline+=%=      "left/right separator
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
 set statusline+=\ %P    "percent through file]"
+
+
+let php_sql_query=1     " Enable SQL syntax highlighting for PHP
+let php_folding=1       " Enable folding for PHP classes and functions
