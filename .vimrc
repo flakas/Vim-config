@@ -138,6 +138,10 @@ set statusline+=%m      "modified flag
 set statusline+=%r      "read only flag
 set statusline+=%y      "filetype
 set statusline+=%{fugitive#statusline()}\ 
+set statusline+=" "
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 set statusline+=%=      "left/right separator
 set statusline+=%c,     "cursor column
 set statusline+=%l/%L   "cursor line/total lines
@@ -152,6 +156,9 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
+" Syntastic plugin configs
 let g:syntastic_mode_map = { 'mode' : 'active',
                            \ 'active_filetypes' : ['php', 'python', 'cpp', 'css', 'javascript'],
                            \ 'passive_filetypes' : [] }
+let g:syntastic_check_on_open=1 " Check syntax on first load
+
