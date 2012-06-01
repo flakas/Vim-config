@@ -90,7 +90,7 @@ endif
 set foldclose=all
 set foldmethod=marker
 set enc=utf-8
-set lazyredraw
+set nolazyredraw
 
 "set spellchecking
 "set spell
