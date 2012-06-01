@@ -145,4 +145,9 @@ set statusline+=\ %P    "percent through file]"
 
 
 let php_sql_query=1     " Enable SQL syntax highlighting for PHP
-let php_folding=1       " Enable folding for PHP classes and functions
+
+" sane movement with wrap turned on
+nnoremap j gj
+nnoremap k gk
+vnoremap j gj
+vnoremap k gk
