@@ -16,3 +16,6 @@
 [submodule ".vim/bundle/vim-jslint"]
 	path = .vim/bundle/vim-jslint
 	url = git://github.com/hallettj/jslint.vim.git
+[submodule ".vim/bundle/vim-syntastic"]
+	path = .vim/bundle/vim-syntastic
+	url = git://github.com/scrooloose/syntastic.git

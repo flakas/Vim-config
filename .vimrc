@@ -151,3 +151,7 @@ nnoremap j gj
 nnoremap k gk
 vnoremap j gj
 vnoremap k gk
+
+let g:syntastic_mode_map = { 'mode' : 'active',
+                           \ 'active_filetypes' : ['php', 'python', 'cpp', 'css', 'javascript'],
+                           \ 'passive_filetypes' : [] }
