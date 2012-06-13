@@ -77,20 +77,18 @@ set wrap "Wrap lines
 
 "Solarized theme, dark background
 if has("gui_running")
-    color solarized
+    color molokai
     set background=dark
 endif
 if !has("gui_running")
     color jellybeans
     set background=light
-    "color jellybeans
-    "set background=light
 endif
 
 set foldclose=all
 set foldmethod=marker
 set enc=utf-8
-set nolazyredraw
+"set nolazyredraw
 
 "set spellchecking
 "set spell
@@ -161,4 +159,3 @@ let g:syntastic_mode_map = { 'mode' : 'active',
                            \ 'active_filetypes' : ['php', 'python', 'cpp', 'css', 'javascript'],
                            \ 'passive_filetypes' : [] }
 let g:syntastic_check_on_open=1 " Check syntax on first load
-
