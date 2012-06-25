@@ -65,7 +65,9 @@ set showcmd
 
 "Show tab characters and visual whitespace
 set list
-set listchars=tab:>.
+"set listchars=tab:>.,trail:~,eol:$
+set listchars=eol:¬,tab:>-,trail:~,extends:>,precedes:<
+hi NonText ctermfg=8 guifg=gray
 
 "Set magic on for regex
 set magic
@@ -81,7 +83,7 @@ if has("gui_running")
     set background=dark
 endif
 if !has("gui_running")
-    color jellybeans
+    color molokai
     set background=light
 endif
 
@@ -102,7 +104,7 @@ set showmode
 "Enable folding
 set foldenable
 
-set guifont=
+set guifont=Monospace\ 11
 
 "Bind F2 key to toggle NERDTree
 map <F2> :NERDTreeToggle<CR>
@@ -125,16 +127,17 @@ vnoremap / /\v
 
 "Always display statusline
 set laststatus=2
-set statusline=%f "tail of the filename"
+set statusline=%F "tail of the filename"
 
 "Modify statusline
-set statusline=%t       "tail of the filename
+set statusline=%f       "tail of the filename
 set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
 set statusline+=%{&ff}] "file format
 set statusline+=%h      "help file flag
 set statusline+=%m      "modified flag
 set statusline+=%r      "read only flag
 set statusline+=%y      "filetype
+set statusline+=[%0.50{expand('%:p:h')}] "Current Working Directory
 set statusline+=%{fugitive#statusline()}\ 
 set statusline+=" "
 set statusline+=%#warningmsg#
@@ -159,3 +162,12 @@ let g:syntastic_mode_map = { 'mode' : 'active',
                            \ 'active_filetypes' : ['php', 'python', 'cpp', 'css', 'javascript'],
                            \ 'passive_filetypes' : [] }
 let g:syntastic_check_on_open=1 " Check syntax on first load
+
+" Tagbar key map
+nmap <F3> :TagbarToggle<CR>
+
+" Rainbow Parentheses
+au VimEnter * RainbowParenthesesToggle
+au Syntax * RainbowParenthesesLoadRound
+au Syntax * RainbowParenthesesLoadSquare
+au Syntax * RainbowParenthesesLoadBraces
