@@ -79,12 +79,16 @@ set wrap "Wrap lines
 
 "Solarized theme, dark background
 if has("gui_running")
-    color molokai
+    color liquidcarbon
     set background=dark
+    "color molokai
+    "set background=dark
 endif
 if !has("gui_running")
-    color molokai
-    set background=light
+    color liquidcarbon
+    set background=dark
+    "color molokai
+    "set background=light
 endif
 
 set foldclose=all
