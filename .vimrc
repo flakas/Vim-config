@@ -81,14 +81,10 @@ set wrap "Wrap lines
 if has("gui_running")
     color liquidcarbon
     set background=dark
-    "color molokai
-    "set background=dark
 endif
 if !has("gui_running")
-    color liquidcarbon
-    set background=dark
-    "color molokai
-    "set background=light
+    color molokai
+    set background=light
 endif
 
 set foldclose=all
