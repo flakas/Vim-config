@@ -67,7 +67,7 @@ set showcmd
 set list
 "set listchars=tab:>.,trail:~,eol:$
 set listchars=eol:¬,tab:>-,trail:~,extends:>,precedes:<
-hi NonText ctermfg=8 guifg=gray
+hi NonText ctermfg=9 guifg=gray
 
 "Set magic on for regex
 set magic
@@ -79,12 +79,12 @@ set wrap "Wrap lines
 
 "Solarized theme, dark background
 if has("gui_running")
-    color liquidcarbon
+    color solarized
     set background=dark
 endif
 if !has("gui_running")
-    color molokai
-    set background=light
+    color solarized
+    set background=dark
 endif
 
 set foldclose=all
@@ -171,3 +171,6 @@ au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
+
+" Set 16 colors
+set t_Co=16
