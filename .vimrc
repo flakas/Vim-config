@@ -174,3 +174,6 @@ au Syntax * RainbowParenthesesLoadBraces
 
 " Set 16 colors
 set t_Co=16
+
+" Remap <ESC> to jj
+inoremap jj <ESC>
