@@ -19,9 +19,6 @@
 [submodule ".vim/bundle/vim-syntastic"]
 	path = .vim/bundle/vim-syntastic
 	url = git://github.com/scrooloose/syntastic.git
-[submodule ".vim/bundle/command-t"]
-	path = .vim/bundle/command-t
-	url = git://github.com/wincent/Command-T.git
 [submodule ".vim/bundle/tagbar"]
 	path = .vim/bundle/tagbar
 	url = git://github.com/majutsushi/tagbar.git
@@ -37,3 +34,6 @@
 [submodule ".vim/bundle/tabular"]
 	path = .vim/bundle/tabular
 	url = git://github.com/godlygeek/tabular.git
+[submodule ".vim/bundle/vim-command-t"]
+	path = .vim/bundle/vim-command-t
+	url = git://git.wincent.com/command-t.git
