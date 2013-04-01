@@ -13,9 +13,6 @@
 [submodule ".vim/bundle/vim-surround"]
 	path = .vim/bundle/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule ".vim/bundle/vim-jslint"]
-	path = .vim/bundle/vim-jslint
-	url = git://github.com/hallettj/jslint.vim.git
 [submodule ".vim/bundle/vim-syntastic"]
 	path = .vim/bundle/vim-syntastic
 	url = git://github.com/scrooloose/syntastic.git
@@ -40,3 +37,6 @@
 [submodule ".vim/bundle/vim-gitgutter"]
 	path = .vim/bundle/vim-gitgutter
 	url = git://github.com/airblade/vim-gitgutter.git
+[submodule ".vim/bundle/vim-scala"]
+	path = .vim/bundle/vim-scala
+	url = git://github.com/derekwyatt/vim-scala.git
