@@ -1,155 +1,59 @@
-"Turn on pathogen
-call pathogen#infect()
-call pathogen#helptags()
-call pathogen#runtime_append_all_bundles()
-
-"Enable buffer switching without writing to disc
-set hidden
-
-"This needs a longer history!
-set history=1000
-
-"Enable wildmenu
-set wildmenu
-set wildmode=list:longest:full
-
-"Use case-smart searching
-set ignorecase
-set smartcase
-
-"Set terminal title
 set title
-
-set scrolloff=3
-
-"Line numbers
 set ruler
-
-"Intuitive backspacing
+set number
+set scrolloff=3
 set backspace=indent,eol,start
-
-syntax on
-filetype on
-filetype plugin on
-filetype indent on
-filetype plugin indent on
-
-"Highlight search terms
-set hlsearch
-set incsearch  "Dynamically as you type
-
-set visualbell "No more damn bell!
-
-set autoindent
-set cmdheight=2 "CMD line 2 rows high
-set nu "Display line numbers on the left side
-
-"Show matching braces
-set showmatch
 
 "Set tabstop width
 set shiftwidth=4
 set tabstop=4
 set softtabstop=4
+
 "Tabs to spaces
 set expandtab
 
-"Select when using mouse
-set selectmode=mouse
+"Use case-smart searching
+set ignorecase
+set smartcase
 
-set nobackup
+"Highlight search terms
+set hlsearch
+set incsearch  "Dynamically as you type
+
+" Things to remember
+set history=256
+
+" Disable backups
 set nowritebackup
+set nobackup
 
-"Show (partial) commands
-set showcmd
-
-"Show tab characters and visual whitespace
-set list
-"set listchars=tab:>.,trail:~,eol:$
-set listchars=eol:¬,tab:>-,trail:~,extends:>,precedes:<
-hi NonText ctermfg=9 guifg=gray
-
-"Set magic on for regex
-set magic
-
-
-set ai "Auto indent
-set si "Smart indent
-set wrap "Wrap lines
-
-"Solarized theme, dark background
-if has("gui_running")
-    color solarized
-    set background=dark
-endif
-if !has("gui_running")
-    color solarized
-    set background=dark
-endif
-
-set foldclose=all
-set foldmethod=marker
+set hidden " The current buffer can be put to the background without writing to disk
+set wildmenu
+set wildmode=longest:list:full " At command line, complete longest common string, then list alternatives.
+set autoindent
+set showmatch " Show matching brackets
+set novisualbell
+set noerrorbells
 set enc=utf-8
-"set nolazyredraw
 
-"set spellchecking
-"set spell
+" Sane search
+nnoremap / /\v
+vnoremap / /\v
 
-"Highlight current line
-set cursorline
+" List invisible characters
+set list
+set listchars=eol:¬,tab:>-,trail:~,extends:>,precedes:<
 
-"Display current mode
-set showmode
-
-"Enable folding
-set foldenable
-
-set guifont=Monospace\ 11
-
-"Bind F2 key to toggle NERDTree
-map <F2> :NERDTreeToggle<CR>
 
 "Set leader to comma (,)
 let mapleader=","
 
-"Notify about lines longer than 80 chars
-if exists("+colorcolumn")
-    set cc=80
-else
-    au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-endif
-
-"Notify about trailing whitespace
-match ErrorMsg '\s\+$'
-
-nnoremap / /\v
-vnoremap / /\v
-
-"Always display statusline
-set laststatus=2
-set statusline=%F "tail of the filename"
-
-"Modify statusline
-set statusline=%f       "tail of the filename
-set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
-set statusline+=%{&ff}] "file format
-set statusline+=%h      "help file flag
-set statusline+=%m      "modified flag
-set statusline+=%r      "read only flag
-set statusline+=%y      "filetype
-set statusline+=[%0.50{expand('%:p:h')}] "Current Working Directory
-set statusline+=%{fugitive#statusline()}\ 
-set statusline+=" "
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
-set statusline+=%=      "left/right separator
-set statusline+=%c,     "cursor column
-set statusline+=%l/%L   "cursor line/total lines
-set statusline+=\ %P    "percent through file]"
-
-
-let php_sql_query=1     " Enable SQL syntax highlighting for PHP
+" Control+S and Control+Q are flow-control characters: disable them in your
+" terminal settings.
+" $ stty -ixon -ixoff
+noremap <C-S> :update<CR>
+vnoremap <C-S> <C-C>:update<CR>
+inoremap <C-S> <C-O>:update<CR>
 
 " sane movement with wrap turned on
 nnoremap j gj
@@ -157,23 +61,64 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
-" Syntastic plugin configs
-let g:syntastic_mode_map = { 'mode' : 'active',
-                           \ 'active_filetypes' : ['php', 'python', 'cpp', 'css', 'javascript'],
-                           \ 'passive_filetypes' : [] }
-let g:syntastic_check_on_open=1 " Check syntax on first load
+" Disable swap files
+set noswapfile
 
-" Tagbar key map
-nmap <F3> :TagbarToggle<CR>
+set cc=80 " Display 80 column marker
 
-" Rainbow Parentheses
+set nocompatible               " be iMproved
+filetype off                   " required!
+
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+" Required!
+Bundle 'gmarik/vundle'
+" Additional plugins
+
+" Colors
+Bundle 'altercation/vim-colors-solarized'
+set t_Co=256
+color solarized
+set background=dark
+set guifont=Monospace\ 11
+syntax on
+
+Bundle 'kien/rainbow_parentheses.vim'
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-" Set 16 colors
-set t_Co=16
+Bundle 'tpope/vim-fugitive'
+Bundle 'tpope/vim-surround'
+Bundle 'wincent/Command-T'
+Bundle 'msanders/snipmate.vim'
+Bundle 'Valloric/YouCompleteMe'
 
-" Remap <ESC> to jj
-inoremap jj <ESC>
+Bundle 'scrooloose/syntastic'
+" Check syntax with syntastic
+nnoremap <silent> <Leader>s :SyntasticCheck<CR>
+
+Bundle 'scrooloose/nerdcommenter'
+
+Bundle 'scrooloose/nerdtree'
+map <F2> :NERDTreeToggle<CR>
+
+Bundle 'bling/vim-airline'
+"Always display statusline
+set laststatus=2
+
+"Notify about trailing whitespace
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace '\s\+$'
+
+Bundle 'Yggdroot/indentLine'
+let g:indentLine_char = '¦'
+
+Bundle 'kana/vim-smartinput'
+
+filetype plugin indent on " required
+
+set showcmd " Show partial commands
+set modeline " Enable file modelines
