@@ -1,4 +1,4 @@
-# Copyright 2010-2011 Wincent Colaiuta. All rights reserved.
+# Copyright 2010-2014 Wincent Colaiuta. All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -23,8 +23,6 @@
 
 require 'spec_helper'
 require 'command-t/controller'
-
-module VIM; end
 
 describe CommandT::Controller do
   describe 'accept selection' do
@@ -93,6 +91,9 @@ describe CommandT::Controller do
     stub($curbuf).number.returns('0')
     stub(::VIM).command(/noremap/)
     stub(::VIM).command('silent b 0')
+    stub(::VIM).command(/augroup/)
+    stub(::VIM).command('au!')
+    stub(::VIM).command(/autocmd/)
     stub(::VIM).evaluate(/exists\(.+\)/).returns('0')
     stub(::VIM).evaluate('getcwd()').returns(working_directory)
     stub(::VIM).evaluate('&buflisted').returns('1')

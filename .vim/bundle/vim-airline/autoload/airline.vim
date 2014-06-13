@@ -1,101 +1,136 @@
-" MIT License. Copyright (c) 2013 Bailey Ling.
+" MIT License. Copyright (c) 2013-2014 Bailey Ling.
 " vim: et ts=2 sts=2 sw=2
 
+let g:airline_statusline_funcrefs = get(g:, 'airline_statusline_funcrefs', [])
+
 let s:sections = ['a','b','c','gutter','x','y','z','warning']
-let s:highlighter = airline#highlighter#new()
+let s:inactive_funcrefs = []
+
+function! airline#add_statusline_func(name)
+  call airline#add_statusline_funcref(function(a:name))
+endfunction
+
+function! airline#add_statusline_funcref(function)
+  if index(g:airline_statusline_funcrefs, a:function) >= 0
+    echohl WarningMsg
+    echo 'The airline statusline funcref '.string(a:function).' has already been added.'
+    echohl NONE
+    return
+  endif
+  call add(g:airline_statusline_funcrefs, a:function)
+endfunction
+
+function! airline#remove_statusline_func(name)
+  let i = index(g:airline_statusline_funcrefs, function(a:name))
+  if i > -1
+    call remove(g:airline_statusline_funcrefs, i)
+  endif
+endfunction
+
+function! airline#add_inactive_statusline_func(name)
+  call add(s:inactive_funcrefs, function(a:name))
+endfunction
 
 function! airline#load_theme()
-  call s:highlighter.load_theme()
+  if exists('*airline#themes#{g:airline_theme}#refresh')
+    call airline#themes#{g:airline_theme}#refresh()
+  endif
+
+  let palette = g:airline#themes#{g:airline_theme}#palette
+  call airline#themes#patch(palette)
+
+  if exists('g:airline_theme_patch_func')
+    let Fn = function(g:airline_theme_patch_func)
+    call Fn(palette)
+  endif
+
+  call airline#highlighter#load_theme()
   call airline#extensions#load_theme()
 endfunction
 
 function! airline#switch_theme(name)
-  let g:airline_theme = a:name
-  let palette = g:airline#themes#{g:airline_theme}#palette "also lazy loads the theme
-  call airline#themes#patch(palette)
+  try
+    let palette = g:airline#themes#{a:name}#palette "also lazy loads the theme
+    let g:airline_theme = a:name
+  catch
+    echohl WarningMsg | echo 'The specified theme cannot be found.' | echohl NONE
+    if exists('g:airline_theme')
+      return
+    else
+      let g:airline_theme = 'dark'
+    endif
+  endtry
 
   let w:airline_lastmode = ''
   call airline#update_statusline()
   call airline#load_theme()
-  call airline#check_mode()
+
+  " this is required to prevent clobbering the startup info message, i don't know why...
+  call airline#check_mode(winnr())
 endfunction
 
 function! airline#switch_matching_theme()
   if exists('g:colors_name')
-    let v:errmsg = ''
-    silent! let palette = g:airline#themes#{g:colors_name}#palette
-    if empty(v:errmsg)
+    try
+      let palette = g:airline#themes#{g:colors_name}#palette
       call airline#switch_theme(g:colors_name)
       return 1
-    else
+    catch
       for map in items(g:airline_theme_map)
         if match(g:colors_name, map[0]) > -1
           call airline#switch_theme(map[1])
           return 1
         endif
       endfor
-    endif
+    endtry
   endif
   return 0
 endfunction
 
-function! s:get_section(winnr, key, ...)
-  let text = airline#util#getwinvar(a:winnr, 'airline_section_'.a:key, g:airline_section_{a:key})
-  let [prefix, suffix] = [get(a:000, 0, '%( '), get(a:000, 1, ' %)')]
-  return empty(text) ? '' : prefix.text.suffix
-endfunction
-
-function! airline#get_statusline(winnr, active)
-  let builder = airline#builder#new(a:active, s:highlighter)
-
-  if airline#util#getwinvar(a:winnr, 'airline_render_left', a:active || (!a:active && !g:airline_inactive_collapse))
-    call builder.add_section('airline_a', s:get_section(a:winnr, 'a'))
-    call builder.add_section('airline_b', s:get_section(a:winnr, 'b'))
-    call builder.add_section('airline_c', '%<'.s:get_section(a:winnr, 'c'))
-  else
-    call builder.add_section('airline_c', '%f%m')
-  endif
-
-  call builder.split(s:get_section(a:winnr, 'gutter', '', ''))
-
-  if airline#util#getwinvar(a:winnr, 'airline_render_right', 1)
-    call builder.add_section('airline_x', s:get_section(a:winnr, 'x'))
-    call builder.add_section('airline_y', s:get_section(a:winnr, 'y'))
-    call builder.add_section('airline_z', s:get_section(a:winnr, 'z'))
-    if a:active
-      call builder.add_raw('%(')
-      call builder.add_section('warningmsg', s:get_section(a:winnr, 'warning', '', ''))
-      call builder.add_raw('%)')
-    endif
-  endif
-
-  return builder.build()
-endfunction
-
 function! airline#update_statusline()
-  if airline#util#exec_funcrefs(g:airline_exclude_funcrefs, 1)
-    call setwinvar(winnr(), '&statusline', '')
-    return
-  endif
-
   for nr in filter(range(1, winnr('$')), 'v:val != winnr()')
     call setwinvar(nr, 'airline_active', 0)
-    call setwinvar(nr, '&statusline', airline#get_statusline(nr, 0))
+    let context = { 'winnr': nr, 'active': 0, 'bufnr': winbufnr(nr) }
+    call s:invoke_funcrefs(context, s:inactive_funcrefs)
   endfor
-
-  let w:airline_active = 1
 
   unlet! w:airline_render_left
   unlet! w:airline_render_right
   for section in s:sections
     unlet! w:airline_section_{section}
   endfor
-  call airline#util#exec_funcrefs(g:airline_statusline_funcrefs, 0)
 
-  call setwinvar(winnr(), '&statusline', airline#get_statusline(winnr(), 1))
+  let w:airline_active = 1
+  let context = { 'winnr': winnr(), 'active': 1, 'bufnr': winbufnr(winnr()) }
+  call s:invoke_funcrefs(context, g:airline_statusline_funcrefs)
 endfunction
 
-function! airline#check_mode()
+let s:contexts = {}
+let s:core_funcrefs = [
+      \ function('airline#extensions#apply'),
+      \ function('airline#extensions#default#apply') ]
+function! s:invoke_funcrefs(context, funcrefs)
+  let builder = airline#builder#new(a:context)
+  let err = airline#util#exec_funcrefs(a:funcrefs + s:core_funcrefs, builder, a:context)
+  if err == 1
+    let a:context.line = builder.build()
+    let s:contexts[a:context.winnr] = a:context
+    call setwinvar(a:context.winnr, '&statusline', '%!airline#statusline('.a:context.winnr.')')
+  endif
+endfunction
+
+function! airline#statusline(winnr)
+  if has_key(s:contexts, a:winnr)
+    return '%{airline#check_mode('.a:winnr.')}'.s:contexts[a:winnr].line
+  endif
+
+  " in rare circumstances this happens...see #276
+  return ''
+endfunction
+
+function! airline#check_mode(winnr)
+  let context = s:contexts[a:winnr]
+
   if get(w:, 'airline_active', 1)
     let l:m = mode()
     if l:m ==# "i"
@@ -116,15 +151,22 @@ function! airline#check_mode()
   if g:airline_detect_modified && &modified
     call add(l:mode, 'modified')
   endif
+
   if g:airline_detect_paste && &paste
     call add(l:mode, 'paste')
   endif
 
+  if &readonly
+    call add(l:mode, 'readonly')
+  endif
+
   let mode_string = join(l:mode)
   if get(w:, 'airline_lastmode', '') != mode_string
-    call s:highlighter.highlight(l:mode)
+    call airline#highlighter#highlight_modified_inactive(context.bufnr)
+    call airline#highlighter#highlight(l:mode)
     let w:airline_lastmode = mode_string
   endif
+
   return ''
 endfunction
 

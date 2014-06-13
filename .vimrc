@@ -95,8 +95,11 @@ Bundle 'tpope/vim-surround'
 Bundle 'wincent/Command-T'
 Bundle 'msanders/snipmate.vim'
 Bundle 'Valloric/YouCompleteMe'
+Bundle 'godlygeek/tabular'
 
 Bundle 'scrooloose/syntastic'
+" Disable syntax checking when writing buffer to disk
+let g:syntastic_check_on_wq = 0
 " Check syntax with syntastic
 nnoremap <silent> <Leader>s :SyntasticCheck<CR>
 
@@ -117,6 +120,24 @@ Bundle 'Yggdroot/indentLine'
 let g:indentLine_char = '¦'
 
 Bundle 'kana/vim-smartinput'
+
+Bundle 'majutsushi/tagbar'
+nmap <F3> :TagbarToggle<CR>
+
+Bundle 'derekwyatt/vim-scala'
+au BufRead,BufNewFile {*.scala} set ft=scala " Detect scala filetype
+
+" Testing
+Bundle 'bkad/CamelCaseMotion'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'jnwhiteh/vim-golang'
+au BufRead,BufNewFile {*.go} set ft=go " Detect go filetype
+Bundle 'tpope/vim-speeddating'
+
+Bundle 'sjl/gundo.vim'
+nnoremap <F5> :GundoToggle<CR>
+
+" Testing end
 
 filetype plugin indent on " required
 
