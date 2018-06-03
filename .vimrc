@@ -5,9 +5,9 @@ set scrolloff=3
 set backspace=indent,eol,start
 
 "Set tabstop width
-set shiftwidth=4
-set tabstop=4
-set softtabstop=4
+set shiftwidth=2
+set tabstop=2
+set softtabstop=2
 
 "Tabs to spaces
 set expandtab
@@ -44,7 +44,6 @@ vnoremap / /\v
 set list
 set listchars=eol:¬,tab:>-,trail:~,extends:>,precedes:<
 
-
 "Set leader to comma (,)
 let mapleader=","
 
@@ -61,6 +60,9 @@ nnoremap k gk
 vnoremap j gj
 vnoremap k gk
 
+" Enable project-specific .vimrc files
+set exrc
+
 " Disable swap files
 set noswapfile
 
@@ -69,46 +71,37 @@ set cc=80 " Display 80 column marker
 set nocompatible               " be iMproved
 filetype off                   " required!
 
-set rtp+=~/.vim/bundle/vundle/
+set rtp+=~/.vim/bundle/Vundle.vim/
 call vundle#rc()
 
 " Required!
-Bundle 'gmarik/vundle'
+Plugin 'VundleVim/Vundle.vim'
 " Additional plugins
 
 " Colors
-Bundle 'altercation/vim-colors-solarized'
+Plugin 'altercation/vim-colors-solarized'
 set t_Co=256
 color solarized
-set background=dark
+set background=light
 set guifont=Monospace\ 11
 syntax on
 
-Bundle 'kien/rainbow_parentheses.vim'
+Plugin 'kien/rainbow_parentheses.vim'
 au VimEnter * RainbowParenthesesToggle
 au Syntax * RainbowParenthesesLoadRound
 au Syntax * RainbowParenthesesLoadSquare
 au Syntax * RainbowParenthesesLoadBraces
 
-Bundle 'tpope/vim-fugitive'
-Bundle 'tpope/vim-surround'
-Bundle 'wincent/Command-T'
-Bundle 'msanders/snipmate.vim'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'godlygeek/tabular'
+Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'wincent/Command-T'
 
-Bundle 'scrooloose/syntastic'
-" Disable syntax checking when writing buffer to disk
-let g:syntastic_check_on_wq = 0
-" Check syntax with syntastic
-nnoremap <silent> <Leader>s :SyntasticCheck<CR>
+Plugin 'scrooloose/nerdcommenter'
 
-Bundle 'scrooloose/nerdcommenter'
-
-Bundle 'scrooloose/nerdtree'
+Plugin 'scrooloose/nerdtree'
 map <F2> :NERDTreeToggle<CR>
 
-Bundle 'bling/vim-airline'
+Plugin 'bling/vim-airline'
 "Always display statusline
 set laststatus=2
 
@@ -116,26 +109,11 @@ set laststatus=2
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace '\s\+$'
 
-Bundle 'Yggdroot/indentLine'
-let g:indentLine_char = '¦'
+" Testing driving new plugins
+Plugin 'bkad/CamelCaseMotion'
+call camelcasemotion#CreateMotionMappings('<leader>')
 
-Bundle 'kana/vim-smartinput'
-
-Bundle 'majutsushi/tagbar'
-nmap <F3> :TagbarToggle<CR>
-
-Bundle 'derekwyatt/vim-scala'
-au BufRead,BufNewFile {*.scala} set ft=scala " Detect scala filetype
-
-" Testing
-Bundle 'bkad/CamelCaseMotion'
-Bundle 'Lokaltog/vim-easymotion'
-Bundle 'jnwhiteh/vim-golang'
-au BufRead,BufNewFile {*.go} set ft=go " Detect go filetype
-Bundle 'tpope/vim-speeddating'
-
-Bundle 'sjl/gundo.vim'
-nnoremap <F5> :GundoToggle<CR>
+Plugin 'Lokaltog/vim-easymotion'
 
 " Testing end
 
@@ -143,3 +121,11 @@ filetype plugin indent on " required
 
 set showcmd " Show partial commands
 set modeline " Enable file modelines
+
+" Disable unsafe commands in custom .vimrc files
+"set secure
+
+" Custom project commands
+" For MP3 PHP projects
+" Run current unit test file
+map <Leader>u :!./do t:u --file=%
